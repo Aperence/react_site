@@ -1,0 +1,2 @@
+Dans package.json de react => pas oublier proxy = "urlBackEnd"
+axios => permet faire requêtes au back-end

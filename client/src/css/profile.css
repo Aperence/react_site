@@ -1,0 +1,9 @@
+
+.img{
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover;
+  width: 500px;
+  height: 500px;
+  border-radius: 250px;
+}
