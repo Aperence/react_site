@@ -1,7 +1,6 @@
 import React from "react";
 import {Alert, Button, Form} from "react-bootstrap"
 import "../css/login.css"
-import eye from "../images/bx-low-vision.svg"
 import axios from "axios"
 import  {Navigate} from 'react-router-dom'
 
@@ -28,7 +27,7 @@ class Login extends React.Component{
         var email = event.target.formGroupEmailLogin.value
         var password = event.target.formGroupPasswordLogin.value
         console.log(email, password)
-        axios.post("users/login", {
+        axios.post("login", {
             "email" : email,
             "password" : password
         }, {withCredentials : true})
@@ -69,7 +68,7 @@ class Login extends React.Component{
             return ({errors : state.errors})
         });
         return;}
-        axios.post(`users/register`,
+        axios.post(`register`,
             {
                 "name" : pseudo,
                 "email" : email,
@@ -131,7 +130,7 @@ class Login extends React.Component{
                 <Form.Group className="mb-3" controlId="formGroupPasswordLogin">
                     <Form.Label style={{"display" : "flex"}}>Password
                         <span style={{"marginLeft" : "auto", "marginRight" : "10px"}}>
-                            <img src={eye} alt="" id="LogIn" onClick={this.changeVisibility}/>
+                            <img src={process.env.PUBLIC_URL + "/images/bx-low-vision.svg"} alt="" id="LogIn" onClick={this.changeVisibility}/>
                         </span>
                     </Form.Label>
                     <Form.Control type={this.state.passwordDisplayLogIn ? "text" : "password"}  placeholder="Password" required isInvalid={!!this.state.errors[1]}/>
@@ -158,7 +157,7 @@ class Login extends React.Component{
                 <Form.Group className="mb-3" controlId="formGroupPasswordRegister">
                     <Form.Label style={{"display" : "flex"}}>Password
                         <span style={{"marginLeft" : "auto", "marginRight" : "10px"}}>
-                            <img src={eye} alt="" id="Register" onClick={this.changeVisibility}/>
+                            <img src={process.env.PUBLIC_URL + "/images/bx-low-vision.svg"} alt="" id="Register" onClick={this.changeVisibility}/>
                         </span>
                     </Form.Label>
                     <Form.Control type={this.state.passwordDisplayRegister ? "text" : "password"} placeholder="Password" required isInvalid={!!this.state.errors[4]}/>
@@ -168,7 +167,7 @@ class Login extends React.Component{
                     <Form.Label style={{"display" : "flex"}}>
                         Repeat password 
                         <span style={{"marginLeft" : "auto", "marginRight" : "10px"}}>
-                            <img src={eye} alt="" id="Register2" onClick={this.changeVisibility}/>
+                            <img src={process.env.PUBLIC_URL + "/images/bx-low-vision.svg"} alt="" id="Register2" onClick={this.changeVisibility}/>
                         </span>
                     </Form.Label>
                     <Form.Control type={this.state.passwordDisplayRegister2 ? "text" : "password"} placeholder="Password" isInvalid={!!this.state.errors[5]} required/>

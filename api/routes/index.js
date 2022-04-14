@@ -32,7 +32,7 @@ MongoClient.connect(uri, (err, db)=>{
   })
 
   router.get("/sessionInfo", (req, res)=>{
-    res.send({name : req.session.name})
+    res.send({name : req.session.user ? req.session.user.name : ""})
   })
 
 })

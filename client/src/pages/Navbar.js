@@ -1,6 +1,7 @@
 import React from "react";
 import {Navbar, Container, Nav, NavDropdown} from "react-bootstrap"
 import { Outlet } from "react-router-dom";
+import axios from "axios";
 
 function NavBar(props){
     return (
@@ -22,7 +23,16 @@ function NavBar(props){
                 </NavDropdown>
                 </Nav>
                 <Nav>
-                <Nav.Link href={props.name ? "/users/profile" : "/users/login"}>{props.name ? "Profile" : "Log in"}</Nav.Link>
+                {props.name ? 
+                (<NavDropdown title="Account" id="collasible-nav-dropdown">
+                    <NavDropdown.Item href="/users/profile">Profile</NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item href="/" onClick={() => {axios.get("/users/logout")}}>Log out</NavDropdown.Item>
+                </NavDropdown>)
+                :
+                (<Nav.Link href="/users/login">Log in</Nav.Link>)
+                }
+                
                 </Nav>
             </Navbar.Collapse>
             </Container>

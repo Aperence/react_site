@@ -19,7 +19,7 @@ MongoClient.connect(uri, (err, db)=>{
     dbo.collection("name").find({name : req.body.name}).toArray((err, data)=>{
       let response = {"status" : "ok", "name" : req.body.name}
       if (data.length == 0){
-        req.session.user = req.body.name
+        req.session.user = {name : req.body.name}
         var data = {
           "name" : req.body.name,
           "email" : req.body.email,
@@ -28,7 +28,6 @@ MongoClient.connect(uri, (err, db)=>{
         dbo.collection("name").insertOne(data)
       }else{
         response.status = "Pseudo already taken"
-        response.name = ""
         delete response.name
       }
       res.send(response)
@@ -40,10 +39,16 @@ MongoClient.connect(uri, (err, db)=>{
       data = data.filter((item)=>bcrypt.compareSync(req.body.password, item.password))
       if (data.length == 0) return res.send({status : "Unknown account"})
       else{
-        req.session.name = data[0].name
+        req.session.user = {name: data[0].name}
         res.send({status : "Connected", name : data[0].name})
       }
     })
+  })
+
+  router.get("/logout", (req,res)=>{
+    delete req.session.user;
+    console.log(req.session.user)
+    res.redirect("/")
   })
 
 })
