@@ -2,12 +2,11 @@ var express = require('express');
 var router = express.Router();
 const {MongoClient} = require("mongodb")
 const bcrypt = require("bcrypt")
-
-const uri = "mongodb+srv://Aperence:22nwsUmTdZNXFlNZ@cluster0.jt2qm.mongodb.net/test"
+const conf = require("../config.json")
 
 /* GET users listing. */
 
-MongoClient.connect(uri, (err, db)=>{
+MongoClient.connect(conf.uri, (err, db)=>{
 
   dbo = db.db("site")
 

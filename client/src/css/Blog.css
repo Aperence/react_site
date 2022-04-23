@@ -1,0 +1,40 @@
+.Container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.toast{
+    margin-top: 10px;
+    border: 1px solid #217c5b;
+    width: 60%;
+}
+
+.toast-header{
+    background-color: #28a745;
+    color : white;
+}
+
+.accordion{
+    width: 60%;
+}
+
+.accordion-item{
+    background-color: #3c4454;
+}
+
+.accordion-button, .accordion-button:not(.collapsed), .input-group-text{
+    background-color: #212529;
+    color: white;
+}
+
+.accordion-button:after{
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") !important;
+}
+
+@media (max-width:1000px){
+    .toast, .accordion{
+        width: 95%;
+    }
+}

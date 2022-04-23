@@ -6,6 +6,7 @@ import NApp from './pages/App';
 import Login from './pages/Login'
 import  Navbar   from './pages/Navbar';
 import Profile from './pages/Profile';
+import Blog from './pages/Blog';
 import axios from 'axios';
 import  {Navigate} from 'react-router-dom'
 
@@ -40,6 +41,7 @@ class App extends React.Component {
               <Route path="login" element={<Login updateState={this.changeState}/>} />
               <Route path="profile" element={<Profile updateState={this.changeState}/>} />
             </Route>
+            <Route path="Blog" element={<Blog name={this.state.name}/>}></Route>
             <Route path="*" element={<Navigate to="/" replace/>}></Route>
           </Route>
           
