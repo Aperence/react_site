@@ -15,7 +15,7 @@ MongoClient.connect(conf.uri, (err, db)=>{
   });
   
   router.post("/register", (req, res)=>{
-    dbo.collection("name").find({name : req.body.name}).toArray((err, data)=>{
+    dbo.collection("users").find({name : req.body.name}).toArray((err, data)=>{
       let response = {"status" : "ok", "name" : req.body.name}
       if (data.length == 0){
         req.session.user = {name : req.body.name}
@@ -24,7 +24,7 @@ MongoClient.connect(conf.uri, (err, db)=>{
           "email" : req.body.email,
           "password" : bcrypt.hashSync(req.body.password, 10)
         }
-        dbo.collection("name").insertOne(data)
+        dbo.collection("users").insertOne(data)
       }else{
         response.status = "Pseudo already taken"
         delete response.name
@@ -34,11 +34,11 @@ MongoClient.connect(conf.uri, (err, db)=>{
   })
 
   router.post("/login", (req,res)=>{
-    dbo.collection("name").find({"email" : req.body.email}).toArray((err, data)=>{
+    dbo.collection("users").find({"email" : req.body.email}).toArray((err, data)=>{
       data = data.filter((item)=>bcrypt.compareSync(req.body.password, item.password))
       if (data.length == 0) return res.send({status : "Unknown account"})
       else{
-        req.session.user = {name: data[0].name}
+        req.session.user = {name: data[0].name, picture: data[0].picture}
         res.send({status : "Connected", name : data[0].name})
       }
     })
@@ -48,6 +48,17 @@ MongoClient.connect(conf.uri, (err, db)=>{
     delete req.session.user;
     console.log(req.session.user)
     res.redirect("/")
+  })
+
+  router.post("/img", (req,res)=>{
+    if (!req.session.user || ! req.session.user.name) return res.send({})
+      dbo.collection("users").updateOne({name: req.session.user.name}, { $set: { picture: req.body.img } }, (err)=>{
+        if (err) {console.log(err); res.send("")}
+        console.log("Updated Image")
+        req.session.user.picture = req.body.img
+        res.send(req.session.user.picture)
+      })
+
   })
 
 })

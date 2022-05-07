@@ -40,6 +40,7 @@ class Login extends React.Component{
                 })
             }else{
                 console.log(res.data.name)
+                this.props.updateComponent()
                 this.props.updateState("name", res.data.name)
                 this.setState({redirect : "/"})
             }
@@ -78,6 +79,7 @@ class Login extends React.Component{
          )
         .then((res)=>{
             console.log(res)
+            this.props.updateComponent()
             if (res.data.status === "ok"){
                 this.setState({redirect : "/"})
                 this.props.updateState("name", res.data.name)

@@ -2,9 +2,8 @@
 import '../css/App.css';
 import React from "react"
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Card} from 'react-bootstrap';
 
-var local = "https://localhost:9000"
+//var local = "https://localhost:9000"
 
 class App extends React.Component{
   constructor(props) {
@@ -18,6 +17,8 @@ class App extends React.Component{
         <header className="App-header">
 
           {this.props.name}
+
+          <img src={this.props.picture}></img>
         
         </header>
       </div>

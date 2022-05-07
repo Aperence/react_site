@@ -7,3 +7,7 @@
   height: 500px;
   border-radius: 250px;
 }
+
+.ReactCrop__image{
+  max-height: none;
+}
