@@ -20,7 +20,7 @@ function NavBar(props){
                 (<NavDropdown title={
                     <span>
                     Account
-                    <img src={props.picture} className="profilePicture"></img>
+                    <img src={props.picture} alt="" className="profilePicture"></img>
                     </span>
                     }
                      id="collasible-nav-dropdown">

@@ -36,7 +36,7 @@ MongoClient.connect(conf.uri, (err, db)=>{
   router.post("/login", (req,res)=>{
     dbo.collection("users").find({"email" : req.body.email}).toArray((err, data)=>{
       data = data.filter((item)=>bcrypt.compareSync(req.body.password, item.password))
-      if (data.length == 0) return res.send({status : "Unknown account"})
+      if (data.length == 0) return res.status(403).send()
       else{
         req.session.user = {name: data[0].name, picture: data[0].picture}
         res.send({status : "Connected", name : data[0].name})

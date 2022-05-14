@@ -8,7 +8,6 @@
 .toast{
     margin-top: 10px;
     border: 1px solid #217c5b;
-    width: 60%;
 }
 
 .toast-header{
@@ -34,7 +33,7 @@
 }
 
 @media (max-width:1000px){
-    .toast, .accordion{
+    .comment, .accordion{
         width: 95%;
     }
 }

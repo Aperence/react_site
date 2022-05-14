@@ -18,7 +18,7 @@ class App extends React.Component{
 
           {this.props.name}
 
-          <img src={this.props.picture}></img>
+          <img src={this.props.picture} alt=""></img>
         
         </header>
       </div>

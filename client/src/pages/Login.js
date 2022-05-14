@@ -32,19 +32,19 @@ class Login extends React.Component{
             "password" : password
         }, {withCredentials : true})
         .then((res)=>{
-            console.log(res.data.status)
-            if (res.data.status === "Unknown account"){
-                this.setState((state)=>{
-                    state.errors[0] = "Unknown account"
-                    return state
-                })
-            }else{
-                console.log(res.data.name)
-                this.props.updateComponent()
-                this.props.updateState("name", res.data.name)
-                this.setState({redirect : "/"})
-            }
+            this.props.updateComponent()
+            this.props.updateState("name", res.data.name)
+            this.setState({redirect : "/"})
+            
         })
+        .catch( (err) =>{
+            console.log(err)
+            this.setState((state)=>{
+                state.errors[0] = "Unknown account with this password"
+                return state
+            })
+        })
+
     }
 
     handleRegister(event){
@@ -80,7 +80,7 @@ class Login extends React.Component{
         .then((res)=>{
             console.log(res)
             this.props.updateComponent()
-            if (res.data.status === "ok"){
+            if (res.status === 200){
                 this.setState({redirect : "/"})
                 this.props.updateState("name", res.data.name)
             }else{

@@ -1,0 +1,40 @@
+
+
+.half-page{
+    width : 60%;
+    padding : 20px 5%;
+    margin: 0px 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: center
+}
+
+.right-panel{
+    display : flex;
+    flex-direction: column;
+    align-items: center;
+    height: 90%
+}
+
+.picture{
+    margin-bottom: 20px;
+    width : 90%
+}
+
+.button{
+    width : 100%
+}
+
+.image-preview{
+    border-radius : 50%;
+    width: 60%;
+    margin-bottom: 20px;
+}
+
+.popup{
+    width : 50%;
+    height : 80%;
+    position: absolute;
+    left : 28%;
+    top : 10%;
+}

@@ -1,15 +1,20 @@
 import React from "react";
 import "../css/profile.css"
 import 'react-image-crop/dist/ReactCrop.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Crop from "../components/Crop"
-
+import Sidebar from "../components/Sidebar"
+import ScrollBarPage from "../components/ScrollBarPage"
 
 
 class Profile extends React.Component{
 
     constructor(props){
         super(props)
+        this.state = {
+            page : "/"
+        }
         this.cropImg = this.cropImg.bind(this)
         this.ref = React.createRef()
         this.cropConfig =  {
@@ -46,8 +51,12 @@ class Profile extends React.Component{
 
       
     render(){
-       return (<div>
-                <Crop updateComponent={this.props.updateComponent}/>
+       return (<div className="pages">
+                <Sidebar changePage={(page) => {console.log(page); this.setState({page : page})}}  name={this.props.name}/>
+                <ScrollBarPage content={(
+                    this.state.page === "img" && <Crop updateComponent={this.props.updateComponent}/>
+                )}/>
+
                </div>)
     }
 }

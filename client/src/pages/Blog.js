@@ -58,7 +58,7 @@ class Blog extends React.Component{
             }
 
             {this.state.messages.map((value, index)=>
-                <Toast key={index} bg="dark">
+                <Toast key={index} bg="dark" style={{width :  "60%"}} className="comment">
                     <Toast.Header closeButton={false}>
                     <strong className="me-auto">{value.account}</strong>
                     <small>{

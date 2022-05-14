@@ -48,7 +48,9 @@ class App extends React.Component {
             <Route index element={<NApp name={this.state.name} picture={this.state.picture}/>} />
             <Route path="users/">
               <Route path="login" element={<Login updateState={this.changeState} updateComponent={this.updateComponent}/> } />
-              <Route path="profile" element={<Profile updateState={this.changeState} updateComponent={this.updateComponent}/>} />
+              <Route path="profile" element={<Profile updateState={this.changeState} 
+                                                      updateComponent={this.updateComponent}
+                                                      name={this.state.name}/>} />
             </Route>
             <Route path="Blog" element={<Blog name={this.state.name}/>}></Route>
             <Route path="*" element={<Navigate to="/" replace/>}></Route>

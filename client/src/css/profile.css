@@ -11,3 +11,17 @@
 .ReactCrop__image{
   max-height: none;
 }
+
+.pages{
+  display: flex;
+  flex-direction: row;
+  height: 90vh;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.sidebar{
+  display: flex;
+  height: inherit; 
+  overflow: scroll initial;
+}

@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import ReactCrop from 'react-image-crop';
-import 'react-image-crop/dist/ReactCrop.css';
 import axios from "axios"
+import {Form, Button, Alert, Toast} from "react-bootstrap"
+
+import 'react-image-crop/dist/ReactCrop.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import "../css/Crop.css"
+
   
 function App(props) {
   const [src, setSrc] = useState(null);
@@ -15,6 +20,7 @@ function App(props) {
   const [image, setImage] = useState(null);
   const [output, setOutput] = useState(null);
   const[res, setRes] = useState(null)
+  const [show, setShow] = useState(true);
   
   const selectImage = (file) => {
     setSrc(URL.createObjectURL(file));
@@ -56,38 +62,49 @@ function App(props) {
       img : output
     }, {withCredentials : true}).then(res=>{
       setRes(res.data)
+      setShow(true)
       props.updateComponent()
     })
   }
   
   return (
-    <div className="App">
-      <center>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => {
-            selectImage(e.target.files[0]);
-          }}
-        />
-        <br />
-        <br />
-        <div>
-          {src && (
-            <div>
-              <ReactCrop src={src} onImageLoaded={setImage}
-                crop={crop} onChange={setCrop} style={{width : "300px"}}/>
-              <br />
-              <button onClick={cropImageNow}>Crop</button>
-              <br />
-              <br />
-            </div>
-          )}
-        </div>
-        {output && <div><span>Preview</span><img src={output} style={{borderRadius : "50%", width: "100px"}} alt=""/></div>}
-        <button onClick={sendImg}>Send</button>
-        {res && <img src={res} style={{borderRadius : "50%", width: "100px"}} alt=""></img>}
-      </center>
+    <div>
+        <div className="half-page">
+          <center>
+          <Form.Group controlId="formFile" className="mb-4">
+            <Form.Label>Select an image</Form.Label>
+            <Form.Control type="file" accept="image/*" onChange={(e) => {
+                  selectImage(e.target.files[0]);
+                }}/>
+          </Form.Group>
+          
+            {src && (
+                <ReactCrop src={src} onImageLoaded={setImage}
+                  crop={crop} onChange={setCrop} className = "picture"
+                  />
+                
+            )}
+            {src && (<Button variant="primary" className="button mt-auto mb-4" onClick={cropImageNow}>Select this area</Button>)}
+          </center>
+      </div>
+
+      <Toast show={output} onClose={()=>{setOutput(null); setShow(false)}} bg="dark" className="popup">
+      <Toast.Header>
+              <span className='me-auto'>Preview screen</span>
+      </Toast.Header>
+      <Toast.Body className='right-panel'>
+          <div style={{fontSize : "20px", marginBottom : "10px"}}>Preview</div>
+          <img src={output} className="image-preview" alt=""/>
+
+          
+          {res && show && 
+          <Alert variant="success" onClose={() => setShow(false)} dismissible style={{width : "90%"}}>
+              Image uploaded successfully
+          </Alert>}
+          <Button variant="primary" className="button mt-auto"  onClick={sendImg}>Send the image</Button>
+      </Toast.Body>
+      </Toast>
+
     </div>
   );
 }
