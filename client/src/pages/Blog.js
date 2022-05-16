@@ -1,6 +1,9 @@
 import axios from "axios";
 import React from "react";
 import {Toast, InputGroup, FormControl, Accordion, Button} from "react-bootstrap"
+import parse from "html-react-parser";
+
+
 import '../css/Blog.css'
 
 class Blog extends React.Component{
@@ -73,7 +76,7 @@ class Blog extends React.Component{
                         Math.round(((Date.now() - value.date) /1000) / 3600 / 24 / 30 / 12) + " years ago" // more than a year
                     }</small>
                     </Toast.Header>
-                    <Toast.Body>{value.content}</Toast.Body>
+                    <Toast.Body>{parse(value.content)}</Toast.Body>
                 </Toast>
             )}
 

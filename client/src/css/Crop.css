@@ -25,16 +25,22 @@
     width : 100%
 }
 
+.button-50{
+    width: 45%;
+}
+
 .image-preview{
     border-radius : 50%;
     width: 60%;
     margin-bottom: 20px;
 }
 
-.popup{
-    width : 50%;
-    height : 80%;
-    position: absolute;
-    left : 28%;
-    top : 10%;
+.modal-content{
+    background-color: #191b1e;
+    border: 1px solid;
+}
+
+.close {
+    color: #fff; 
+    opacity: 1;
 }

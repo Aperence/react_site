@@ -58,6 +58,10 @@ class Login extends React.Component{
             state.errors[2] = "Pseudo must be 6 characters long at least"
             return ({errors : state.errors})
         }) ;return}
+        if (pseudo.trim().length > 12) {this.setState((state)=>{
+            state.errors[2] = "Pseudo can't be more than 12 characters long"
+            return ({errors : state.errors})
+        }) ;return}
 
         if (password.length < 8) {
             this.setState((state)=>{
@@ -71,7 +75,7 @@ class Login extends React.Component{
         return;}
         axios.post(`register`,
             {
-                "name" : pseudo,
+                "name" : pseudo.trim(),
                 "email" : email,
                 "password" : password
             },

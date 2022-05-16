@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import ReactCrop from 'react-image-crop';
 import axios from "axios"
-import {Form, Button, Alert, Toast} from "react-bootstrap"
+import {Form, Button, Alert, Modal} from "react-bootstrap"
 
 import 'react-image-crop/dist/ReactCrop.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -19,8 +19,7 @@ function App(props) {
   });
   const [image, setImage] = useState(null);
   const [output, setOutput] = useState(null);
-  const[res, setRes] = useState(null)
-  const [show, setShow] = useState(true);
+  const [err, setErr] = useState("")
   
   const selectImage = (file) => {
     setSrc(URL.createObjectURL(file));
@@ -60,10 +59,13 @@ function App(props) {
   const sendImg = () =>{
     axios.post("/users/img",{
       img : output
-    }, {withCredentials : true}).then(res=>{
-      setRes(res.data)
-      setShow(true)
+    }, {withCredentials : true})
+    .then(res=>{
+      setOutput(null);
       props.updateComponent()
+    })
+    .catch((err)=>{
+      setErr("An error occured during the upload")
     })
   }
   
@@ -88,22 +90,25 @@ function App(props) {
           </center>
       </div>
 
-      <Toast show={output} onClose={()=>{setOutput(null); setShow(false)}} bg="dark" className="popup">
-      <Toast.Header>
-              <span className='me-auto'>Preview screen</span>
-      </Toast.Header>
-      <Toast.Body className='right-panel'>
+      <Modal show={output} onHide={()=>{setOutput(null);}} centered className='popup' backdrop="static" keyboard={false}>
+        <Modal.Header>
+          <Modal.Title className='ms-auto me-auto'>Preview screen</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className='right-panel'>
           <div style={{fontSize : "20px", marginBottom : "10px"}}>Preview</div>
           <img src={output} className="image-preview" alt=""/>
-
-          
-          {res && show && 
-          <Alert variant="success" onClose={() => setShow(false)} dismissible style={{width : "90%"}}>
-              Image uploaded successfully
+  
+          {err && 
+          <Alert variant="danger" onClose={() => setErr(false)} dismissible style={{width : "90%"}}>
+              {err}
           </Alert>}
-          <Button variant="primary" className="button mt-auto"  onClick={sendImg}>Send the image</Button>
-      </Toast.Body>
-      </Toast>
+        </Modal.Body>
+        <Modal.Footer>
+            <Button variant="danger" className='button-50 me-auto' onClick={() => { setErr(false); setOutput(null)}}>Return</Button>
+            <Button variant="success"  className='button-50' onClick={sendImg}>Save as profile picture</Button>
+        </Modal.Footer>
+      </Modal>
+
 
     </div>
   );
