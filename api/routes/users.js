@@ -2,6 +2,10 @@ var express = require('express');
 var router = express.Router();
 const {MongoClient} = require("mongodb")
 const bcrypt = require("bcrypt")
+const nodemailer = require('nodemailer');
+const fs = require('fs');
+const hogan = require('hogan.js');
+const inlineCss = require('inline-css');
 const conf = require("../config.json")
 
 /* GET users listing. */
@@ -59,6 +63,46 @@ MongoClient.connect(conf.uri, (err, db)=>{
         res.send(req.session.user.picture)
       })
 
+  })
+
+  router.get("/test", (req,res)=>{
+
+    var transporter = nodemailer.createTransport({
+      service: 'hotmail',
+      auth: {
+        user: conf.email,
+        pass: conf.password
+      }
+    });
+    
+
+    // https://code-garage.fr/blog/tutoriel-comment-bien-envoyer-vos-emails-en-html-css-avec-nodejs/
+    (async function(){
+        try {
+            
+            //Load the template file
+            const templateFile = fs.readFileSync("./templates/mail.html");
+            //Load and inline the style
+            const templateStyled = await inlineCss(templateFile.toString(), {url: "file://"+__dirname+"/../templates_css/"});
+            //Inject the data in the template and compile the html
+            const templateCompiled = hogan.compile(templateStyled);
+            const templateRendered = templateCompiled.render({text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, temporibus. Obcaecati, a deserunt ea officiis architecto aliquid ex placeat assumenda porro. Rerum aliquid magni consequatur nobis libero, provident maxime, aperiam quod minus corrupti voluptatum impedit pariatur nesciunt dolor voluptate sint animi fuga magnam ex exercitationem eius. Ut molestias aliquid pariatur molestiae facilis nobis quia est, error quam aspernatur quod perferendis. Dignissimos unde enim maiores quos harum sunt quaerat mollitia ea aperiam molestias, blanditiis autem amet, quam architecto iste, eligendi voluptatem et. Error, consectetur ipsum reiciendis odio quas quasi voluptatibus nulla nostrum, eius blanditiis suscipit et incidunt commodi dicta beatae quos."});
+    
+            const mailOptions = {
+              from: conf.email,
+              to: conf.email,
+              subject: 'Sending Email using Node.js',
+              html: templateRendered
+            };
+      
+          //Send the email
+            await transporter.sendMail(mailOptions).then((info)=>console.log(info))
+            
+        } catch(e){
+            console.error(e);
+        }      
+    })()
+    res.send("Ok")
   })
 
 })
