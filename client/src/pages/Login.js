@@ -1,5 +1,5 @@
 import React from "react";
-import {Alert, Button, Form} from "react-bootstrap"
+import {Alert, Button, Form, Modal} from "react-bootstrap"
 import "../css/login.css"
 import axios from "axios"
 import  {Navigate} from 'react-router-dom'
@@ -13,12 +13,16 @@ class Login extends React.Component{
             "passwordDisplayRegister" : false,
             "passwordDisplayRegister2" : false,
             "errors" : ["", "", "", "", "", "", "", ""],
-            "redirect" : ""
+            "redirect" : "",
+            "displayToken" : false,
+            "errorToken" : false
         }
         this.handleLogin = this.handleLogin.bind(this)
         this.handleRegister = this.handleRegister.bind(this)
+        this.handleConfirmation = this.handleConfirmation.bind(this)
         this.changeVisibility = this.changeVisibility.bind(this)
         this.closeAlert = this.closeAlert.bind(this)
+        this.closeModal = this.closeModal.bind(this)
     }
 
     handleLogin(event){
@@ -85,8 +89,7 @@ class Login extends React.Component{
             console.log(res)
             this.props.updateComponent()
             if (res.status === 200){
-                this.setState({redirect : "/"})
-                this.props.updateState("name", res.data.name)
+                this.setState((state) => {state.displayToken = true; return state})
             }else{
                 this.setState((state)=>{
                     state.errors[7] = res.data.status
@@ -94,6 +97,21 @@ class Login extends React.Component{
                 })
                 console.log(this.state.errors[7])
             }
+        })
+    }
+
+    handleConfirmation(event){
+        event.preventDefault()
+        axios.post("confirm_mail", {
+            enteredKey : event.target.key.value
+        })
+        .then((res)=>{
+            this.setState({redirect : "/"})
+            this.props.updateState("name", res.data.name)
+        })
+        .catch((err)=>{
+            console.log(err)
+            this.setState((state) => {state.displayToken = false; state.errorToken=true; return state})
         })
     }
 
@@ -117,8 +135,13 @@ class Login extends React.Component{
     closeAlert(){
         this.setState((state)=>{
             state.errors[7] = ""
+            state.errorToken = false
             return state
         })
+    }
+
+    closeModal(){
+        this.setState((state) => {state.displayToken = false; return state})
     }
 
     render(){
@@ -126,6 +149,7 @@ class Login extends React.Component{
         return (
         <div className="main">
             {this.state.errors[7] && <Alert className="alert-error" variant="danger" dismissible onClose={this.closeAlert}>{this.state.errors[7]}</Alert>}
+            {this.state.errorToken && <Alert className="alert-error" variant="danger" dismissible onClose={this.closeAlert}>Wrong entered token</Alert>}
             <Form className="form"  onSubmit={this.handleLogin}>
                 <Form.Label className="form-title">Log in</Form.Label>
                 <Form.Group className="mb-3" controlId="formGroupEmailLogin">
@@ -184,6 +208,24 @@ class Login extends React.Component{
                     Submit
                 </Button>
             </Form>
+
+
+            <Modal show={this.state.displayToken} onHide={this.closeModal}>
+                <Modal.Header closeButton>
+                <Modal.Title>Enter your token</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                <Form onSubmit={this.handleConfirmation}>
+                    <Form.Group className="mb-3" controlId="key">
+                        <Form.Label>Email address</Form.Label>
+                        <Form.Control type="text" placeholder="Enter token" />
+                    </Form.Group>
+                    <Button variant="primary" type="submit">
+                        Submit
+                    </Button>
+                    </Form>
+                </Modal.Body>
+            </Modal>
         </div>
         )
     }
